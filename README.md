@@ -1,0 +1,2 @@
+# theQualityAnalystExercises
+theQualityAnalystExercises
