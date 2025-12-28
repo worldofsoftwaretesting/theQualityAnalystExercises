@@ -227,6 +227,11 @@ The Quality Analyst Selenium Testing Practice<br>
 <a href="#svgXpath">🎨 SVG XPath Practice</a>
 <a href="#pagination">📄 Pagination</a>
 <a href="#resizable">📐 Resizable Element</a>
+<a href="#classNameLocator">🏷️ Class Name Locator</a>
+<a href="#messageDisplay">💬 Message Display</a>
+<a href="#dynamicTextSection">🔄 Dynamic Text</a>
+<a href="#tutorialDynamicText">📘 Dynamic Tutorial Text</a>
+<a href="#dynamicErrorMessages">⚠️ Dynamic Error Messages</a>
 </nav>
 
 <div class="content">
@@ -1344,6 +1349,67 @@ The Quality Analyst Selenium Testing Practice<br>
 </section>
 
 
+<section>
+  <h2>Class Name Locator Practice</h2>
+
+  <button class="submit signInBtn">
+    Sign In
+  </button>
+  
+  <button class="login">
+    Log In
+  </button>
+
+</section>
+
+<section id="messageDisplay">
+  <h2>Message Displayed</h2>
+
+  <label>Action:</label><br>
+  <button type="button" name="showMessageBtn">
+    Show Message
+  </button>
+
+  <br><br>
+
+  <label>Result:</label><br>
+  <div name="displayMessage" type="text" style="display:none">
+    Message is displayed successfully
+  </div>
+</section>
+
+<section id="dynamicTextSection">
+  <h2>Dynamic Text Example (Partial Change)</h2>
+
+  <label>Dynamic Message:</label><br><br>
+
+  <div name="dynamicMessage" type="text">
+    Status: <span id="dynamicValue">Initializing</span>
+  </div>
+</section>
+
+<section id="tutorialDynamicText">
+  <h2>Dynamic Tutorial Text</h2>
+
+  <label>Current Tutorial:</label><br><br>
+
+  <div name="tutorialMessage" type="text">
+    <span class="commonText">Tutorial-</span>
+    <span id="tutorialValue">1 Selenium Basics</span>
+  </div>
+</section>
+
+<section id="dynamicErrorMessages">
+  <h2>Dynamic Error Messages</h2>
+
+  <label>Error Message:</label><br><br>
+
+  <div name="errorMessage" type="text">
+    Error_123
+  </div>
+</section>
+
+
 </div>
 </div>
 </div>
@@ -1408,10 +1474,6 @@ function validateAge() {
   const age = parseInt(regAge.value);
   ageError.innerText =
     isNaN(age) || age < 18 ? "Age must be 18 or above" : "";
-}
-
-function register() {
-  registerMsg.innerHTML = "Registration Successful";
 }
 
 function login() {
@@ -1814,6 +1876,55 @@ function selectDropdownDate(y, m, d) {
 }
 
 window.addEventListener("load", initDropdownCalendar);
+
+document
+    .getElementsByName("showMessageBtn")[0]
+    .addEventListener("click", function () {
+      document.getElementsByName("displayMessage")[0].style.display = "block";
+    });
+	
+	
+const statusValues = [
+    "Processing",
+    "In Progress",
+    "Almost Done",
+    "Completed"
+  ];
+
+  let index1 = 0;
+
+  setInterval(function () {
+    index1 = (index1 + 1) % statusValues.length;
+    document.getElementById("dynamicValue").innerText = statusValues[index1];
+  }, 30000); // changes every 2 minutes
+  
+
+  const tutorials = [
+    "1 The Selenium Basics",
+    "2 The Selenium XPath and Locators",
+    "3 The Selenium Waits and Synchronization",
+    "4 The Selenium Framework Design"
+  ];
+
+  let index2 = 0;
+
+  setInterval(function () {
+    index2 = (index2 + 1) % tutorials.length;
+    document.getElementById("tutorialValue").innerText = tutorials[index2];
+  }, 30000); // updates every 2 minutes
+
+  const errorCodes = [
+    "Error_123",
+    "Error_456",
+    "Error_789"
+  ];
+
+  let index3 = 0;
+
+  setInterval(function () {
+    index3 = (index3 + 1) % errorCodes.length;
+    document.getElementsByName("errorMessage")[0].innerText = errorCodes[index3];
+  }, 30000); // changes every 2 minutes
 
 
 </script>
