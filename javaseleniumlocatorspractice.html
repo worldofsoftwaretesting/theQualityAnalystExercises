@@ -1241,18 +1241,54 @@ The Quality Analyst Selenium Testing Practice<br>
 </section>
 
 <!-- XPATH AXES PRACTICE -->
-<section id="xpathAxes">
-  <h2>XPath Axes Practice</h2>
+<section id="xpathAxes" style="padding:20px; font-family:Arial;">
+  <h2>XPath Axes Practice (Correct Sibling Structure)</h2>
 
-  <div class="grand-parent">
-    <div class="parent">
-      <span class="child" id="targetSpan">Target Child</span>
+  <!-- GRAND PARENT -->
+  <div class="grand-parent"
+       style="border:3px solid #1e90ff; padding:15px;">
+
+    <strong>Grand Parent</strong>
+
+    <!-- PARENT (TARGET PARENT) -->
+    <div class="parent"
+         style="border:3px solid #32cd32; padding:15px; margin-top:15px;">
+      <strong>Parent (Target)</strong>
+
+      <!-- CHILD (TARGET ELEMENT) -->
+      <span class="child"
+            id="targetElement"
+            style="display:inline-block;
+                   border:3px solid #ff4500;
+                   padding:10px;
+                   margin-top:10px;">
+        Child (Target Element)
+      </span>
     </div>
-  </div>
 
-  <div class="sibling">Sibling One</div>
-  <div class="sibling">Sibling Two</div>
+    <!-- PARENT SIBLINGS (Same Parent: grand-parent) -->
+    <div class="parent-sibling"
+         style="border:3px dashed #8a2be2; padding:15px; margin-top:10px;">
+      Parent Sibling One
+    </div>
+
+    <div class="parent-sibling"
+         style="border:3px dashed #8a2be2; padding:15px; margin-top:10px;">
+      Parent Sibling Two
+    </div>
+
+    <div class="parent-sibling"
+         style="border:3px dashed #8a2be2; padding:15px; margin-top:10px;">
+      Parent Sibling Three
+    </div>
+
+  </div>
 </section>
+
+
+
+</section>
+
 
 
 <!-- NORMALIZE SPACE -->
