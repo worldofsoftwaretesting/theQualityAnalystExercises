@@ -12,10 +12,12 @@
     section {
       border: 2px solid #ccc;
       padding: 20px;
-      width: 420px;
+      width: 450px;
+      margin-bottom: 20px;
     }
     button {
       margin-top: 10px;
+      margin-right: 10px;
       padding: 6px 12px;
       cursor: pointer;
     }
@@ -43,6 +45,9 @@
     <input type="password" id="password" name="password"><br><br>
 
     <button id="loginBtn" onclick="login()">Login</button>
+    <button id="loginNewWindowBtn" onclick="openLoginInNewWindow()">
+      Login in New Window
+    </button>
 
     <p id="loginMessage" class="error"></p>
   </section>
@@ -56,7 +61,7 @@
   </section>
 
   <script>
-    // Hardcoded valid credentials (for practice)
+    // Hardcoded credentials (for practice)
     const validUsername = "admin";
     const validPassword = "admin123";
 
@@ -65,38 +70,86 @@
       const password = document.getElementById("password").value;
       const message = document.getElementById("loginMessage");
 
-      // Clear old message
       message.innerText = "";
 
       if (username === validUsername && password === validPassword) {
-        // SUCCESS: Navigate to Home
         document.title = "Home Page - Dashboard";
-
         history.pushState({ page: "home" }, "", "#home");
 
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("homeSection").style.display = "block";
       } else {
-        // FAILURE: Stay on Login
         message.innerText = "❌ Invalid credentials. Please try again.";
       }
     }
 
     function logout() {
       document.title = "Login Page - Practice";
-
       history.pushState({ page: "login" }, "", "#login");
 
       document.getElementById("homeSection").style.display = "none";
       document.getElementById("loginSection").style.display = "block";
 
-      // Clear fields on logout
       document.getElementById("username").value = "";
       document.getElementById("password").value = "";
       document.getElementById("loginMessage").innerText = "";
     }
 
-    // Handle browser back & forward buttons
+    // Open same login page in a NEW WINDOW
+    function openLoginInNewWindow() {
+      const newWindow = window.open(
+        "",
+        "_blank",
+        "width=500,height=400"
+      );
+
+      newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Login Page - New Window</title>
+          <style>
+            body { font-family: Arial; margin: 30px; }
+            button { margin-top: 10px; }
+            .error { color: red; font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <h2>🔐 Login (New Window)</h2>
+
+          <label>Username:</label><br>
+          <input type="text" id="nwUsername"><br><br>
+
+          <label>Password:</label><br>
+          <input type="password" id="nwPassword"><br><br>
+
+          <button onclick="loginNewWindow()">Login</button>
+
+          <p id="nwMessage" class="error"></p>
+
+          <script>
+            function loginNewWindow() {
+              const u = document.getElementById("nwUsername").value;
+              const p = document.getElementById("nwPassword").value;
+
+              if (u === "admin" && p === "admin123") {
+                document.title = "Home Page - Dashboard (New Window)";
+                document.body.innerHTML =
+                  "<h2>🏠 Home Page</h2><p>Login successful in new window.</p>";
+              } else {
+                document.getElementById("nwMessage").innerText =
+                  "❌ Invalid credentials.";
+              }
+            }
+          <\/script>
+        </body>
+        </html>
+      `);
+
+      newWindow.document.close();
+    }
+
+    // Handle browser back & forward
     window.onpopstate = function (event) {
       if (event.state && event.state.page === "home") {
         document.title = "Home Page - Dashboard";
