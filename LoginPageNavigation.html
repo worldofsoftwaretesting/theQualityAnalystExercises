@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Login Page - Practice</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,12 +12,20 @@
     section {
       border: 2px solid #ccc;
       padding: 20px;
-      width: 400px;
+      width: 420px;
     }
     button {
       margin-top: 10px;
       padding: 6px 12px;
       cursor: pointer;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -34,39 +43,57 @@
     <input type="password" id="password" name="password"><br><br>
 
     <button id="loginBtn" onclick="login()">Login</button>
+
+    <p id="loginMessage" class="error"></p>
   </section>
 
   <!-- HOME SECTION -->
   <section id="homeSection" style="display:none;">
     <h2>🏠 Home Page</h2>
-    <p>Welcome! You are now on the home page.</p>
+    <p class="success">Welcome! Login successful.</p>
 
     <button id="logoutBtn" onclick="logout()">Logout</button>
   </section>
 
   <script>
+    // Hardcoded valid credentials (for practice)
+    const validUsername = "admin";
+    const validPassword = "admin123";
+
     function login() {
-      // Change page title
-      document.title = "Home Page - Dashboard";
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("loginMessage");
 
-      // Update browser history
-      history.pushState({ page: "home" }, "", "#home");
+      // Clear old message
+      message.innerText = "";
 
-      // Toggle sections
-      document.getElementById("loginSection").style.display = "none";
-      document.getElementById("homeSection").style.display = "block";
+      if (username === validUsername && password === validPassword) {
+        // SUCCESS: Navigate to Home
+        document.title = "Home Page - Dashboard";
+
+        history.pushState({ page: "home" }, "", "#home");
+
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("homeSection").style.display = "block";
+      } else {
+        // FAILURE: Stay on Login
+        message.innerText = "❌ Invalid credentials. Please try again.";
+      }
     }
 
     function logout() {
-      // Change page title back
       document.title = "Login Page - Practice";
 
-      // Update browser history
       history.pushState({ page: "login" }, "", "#login");
 
-      // Toggle sections
       document.getElementById("homeSection").style.display = "none";
       document.getElementById("loginSection").style.display = "block";
+
+      // Clear fields on logout
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("loginMessage").innerText = "";
     }
 
     // Handle browser back & forward buttons
