@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Quality Analyst Selenium Testing Practice</title>
+
+
+<style>
+body{margin:0;font-family:Arial;background:#f4f6f8}
+header{background:#222;color:#fff;padding:15px;text-align:center;font-size:24px}
+.subscribe-btn{background:red;color:white;padding:12px 25px;border:none;font-size:18px;cursor:pointer}
+.container{display:flex}
+nav{width:270px;background:#1e293b;color:white;height:100vh;overflow:auto;position:sticky;top:0}
+nav a{display:block;padding:10px;color:#cbd5e1;text-decoration:none}
+nav a:hover{background:#334155;color:white}
+.content{padding:20px;width:100%}
+section{background:white;padding:20px;margin-bottom:20px;border-radius:8px}
+.hidden{display:none}
+.hover-box{width:200px;height:80px;background:#e5e7eb;text-align:center;line-height:80px}
+.drag{padding:10px;background:#38bdf8;width:120px;cursor:grab}
+.drop{padding:20px;background:#e5e7eb;width:200px;margin-top:10px}
+.slider{width:200px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid #aaa;padding:6px}
+.pagination span{padding:6px 10px;background:#ddd;margin:3px;cursor:pointer}
+.pagination .active{background:#2563eb;color:white}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none}
+.modal-content{background:white;padding:20px;width:300px;margin:120px auto}
+iframe{width:100%;height:150px;border:1px solid #999}
+.error{color:red}
+.success{color:green}
+/* Hide auth pages by default */
+#loginSection,
+#registerSection {
+  display: none;
+}
+.context-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 120px;
+  z-index: 1000;
+}
+
+.context-menu li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.context-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+.range-container {
+  position: relative;
+  width: 320px;
+  height: 30px;
+}
+
+.range-container input[type="range"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 320px;
+  pointer-events: none;
+  -webkit-appearance: none;
+  background: none;
+}
+
+.range-container input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+}
+
+.range-container input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: transparent;
+}
+
+#tooltip {
+  position: relative;
+  margin-top: 20px;
+}
+
+.tooltip-box {
+  display: none;
+  position: absolute;
+  top: 45px;
+  left: 0;
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.required {
+  color: red;
+}
+
+.error {
+  color: red;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.success {
+  color: green;
+}
+
+.calendar-wrapper {
+  position: relative;
+  width: 220px;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 6px;
+  top: 4px;
+  cursor: pointer;
+}
+
+.calendar-popup {
+  display: none;
+  border: 1px solid #ccc;
+  width: 220px;
+  padding: 8px;
+  margin-top: 5px;
+  background: #fff;
+}
+
+.calendar-popup button {
+  width: 30px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.calendar-popup button.disabled {
+  background: #eee;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.calendar-days {
+  width: 240px;
+}
+
+.calendar-days button {
+  width: 32px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.calendar-days button.disabled {
+  background: #eee;
+  color: #999;
+  cursor: not-allowed;
+}
+
+</style>
+</head>
+
+<body>
+
+
+<header>
+The Quality Analyst Selenium Testing Practice<br>
+<button
+  class="subscribe-btn"
+  name="subscribeButton"
+  onclick="window.open('https://www.youtube.com/@thequalityanalysttt', '_blank')">
+  Subscribe The Quality Analyst
+</button>
+
+</header>
+
+
+<div class="container">
+
+<nav>
+<a href="#authNav">🔐 Login and Registration Page</a>
+<a href="#interest">💰 Interest Calculator</a>
+<a href="#enabled">🚦 Enabled / Disabled</a>
+<a href="#dropdowns">📋 Dropdowns</a>
+<a href="#dates">📅 Date Pickers</a>
+<a href="#dateValidation">📅 Date Validation</a>
+<a href="#calendarClickDate">📆 Calendar Click Picker</a>
+<a href="#dropdownCalendar">🗓 Dropdown Calendar</a>
+<a href="#links">🔗 Links</a>
+<a href="#alerts">⚠ Alerts</a>
+<a href="#waits">⏳ Wait</a>
+<a href="#iframe">🧩 iFrame</a>
+<a href="#dragdrop">🧲 Drag & Drop</a>
+<a href="#slider">🎚 Slider</a>
+<a href="#priceRange">🎚 Price Range Slider</a>
+<a href="#dualRange">🎚 Dual Handle Slider</a>
+<a href="#hidden">🙈 Hidden</a>
+<a href="#table">📊 Table</a>
+<a href="#scroll">⬇ Scroll</a>
+<a href="#hover">🖱 Hover</a>
+<a href="#upload">📂 Upload</a>
+<a href="#checkbox">☑ Checkbox</a>
+<a href="#image">🖼 Image</a>
+<a href="#doubleclick">👆 Double Click</a>
+<a href="#contextClick">🖱 Context Click</a>
+<a href="#tooltip">💬 Tooltip</a>
+<a href="#delay">⏱ Delay</a>
+<a href="#xpathAxes">🧬 XPath Axes Practice</a>
+<a href="#normalizeSpace">🧹 Normalize Space XPath</a>
+<a href="#notFunction">🚫 XPath not() Function</a>
+<a href="#lastFunction">🔢 XPath last() Function</a>
+<a href="#dynamicAttributes">🔁 Dynamic Attribute XPath</a>
+<a href="#svgXpath">🎨 SVG XPath Practice</a>
+<a href="#pagination">📄 Pagination</a>
+<a href="#resizable">📐 Resizable Element</a>
+<a href="#classNameLocator">🏷️ Class Name Locator</a>
+<a href="#messageDisplay">💬 Message Display</a>
+<a href="#dynamicTextSection">🔄 Dynamic Text</a>
+<a href="#tutorialDynamicText">📘 Dynamic Tutorial Text</a>
+<a href="#dynamicErrorMessages">⚠️ Dynamic Error Messages</a>
+<a href="#menuSection">📋 Menu Navigation</a>
+<a href="#inputFields">🔤 Starts-With Selector</a>
+</nav>
+
+<div class="content">
+
+
+<section id="authNav">
+  <label for="registerBtn">New User?</label>
+  <button
+    id="registerBtn"
+    onclick="openRegisterWindow()">
+    Register
+  </button>
+
+  &nbsp;&nbsp;
+
+  <label for="loginBtnTop">Existing User?</label>
+  <button
+    id="loginBtnTop"
+    onclick="openLoginTab()">
+    Login
+  </button>
+</section>
+<hr>
+
+<section id="registerSection" style="display:none;">
+  <h2>Register</h2>
+
+  <label>Name *</label><br>
+  <input id="regName"><br>
+  <div id="nameError" class="error"></div><br>
+
+  <label>Last Name *</label><br>
+  <input id="regLastName"><br>
+  <div id="lastNameError" class="error"></div><br>
+
+  <label>Phone *</label><br>
+  <input id="regPhone"><br>
+  <div id="phoneError" class="error"></div><br>
+
+  <label>Email *</label><br>
+  <input id="regEmail"><br>
+  <div id="emailError" class="error"></div><br>
+
+  <label>Gender *</label><br>
+  <input type="radio" name="regGender"> Male
+  <input type="radio" name="regGender"> Female
+  <br><br>
+
+  <label>Age (18+)</label><br>
+  <input id="regAge" oninput="validateAge()"><br>
+  <div id="ageError" class="error"></div>
+  <br>
+
+  <input type="checkbox" id="regTerms"> Accept Terms
+  <br><br>
+
+  <button onclick="register()">Register</button>
+  <br><br>
+
+  <button onclick="openLoginWindow()">Already have an account?</button>
+
+  <div id="registerMsg"></div>
+</section>
+
+
+<section id="loginSection" style="display:none;">
+  <h2>Login</h2>
+
+  <label>Username *</label><br>
+  <input id="loginUsername"><br><br>
+
+  <label>Password *</label><br>
+  <input id="loginPassword" type="password"><br><br>
+
+  <button onclick="login()">Login</button>
+  <br><br>
+
+  <a href="#" onclick="openForgotModal()">Forgot Password?</a>
+
+  <div id="loginMsg"></div>
+</section>
+
+<div id="forgotModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3>Forgot Password</h3>
+
+    <label>Registered Email</label><br>
+    <input id="forgotEmail" type="email"><br><br>
+
+    <button onclick="closeForgotModal()">Close</button>
+  </div>
+</div>
+
+<!-- MAIN APP CONTENT (everything else) -->
+<div id="mainContent">
+  <!-- all your sections like upload, table, iframe, slider, etc -->
+<!-- INTEREST -->
+<section id="interest">
+  <h2>Interest Calculator</h2>
+
+  <label for="principal">Principal Amount:</label><br>
+  <input
+    id="principal"
+    name="interestPrincipal"
+    placeholder="Enter principal amount">
+
+  <br><br>
+
+  <label for="years">Number of Years:</label><br>
+  <input
+    id="years"
+    name="interestYears"
+    placeholder="Enter years">
+
+  <br><br>
+
+  <label for="rate">Interest Rate (%):</label><br>
+  <select
+    id="rate"
+    name="interestRate">
+    <option value="">-- Select Rate --</option>
+    <option>5</option>
+    <option>6</option>
+    <option>7</option>
+    <option>8</option>
+    <option>9</option>
+    <option>10</option>
+  </select>
+
+  <br><br>
+
+  <button
+    id="calculateInterestBtn"
+    name="interestCalculateButton"
+    onclick="calculate()">
+    Calculate Interest
+  </button>
+
+  <br><br>
+
+  <label>Result:</label>
+  <div id="interestResult"></div>
+
+  <br><br>
+
+  <label>Window / Tab Actions:</label><br>
+
+  <button
+    id="openCalculatorWindow"
+    name="openCalculatorWindow"
+    onclick="window.open('?page=calculator','calcWin','width=400,height=400')">
+    Open Calculator in New Window
+  </button>
+
+  <br><br>
+
+  <button
+    id="openCalculatorTab"
+    name="openCalculatorTab"
+    onclick="window.open('?page=calculator','_blank')">
+    Open Calculator in New Tab
+  </button>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    Calculate simple interest and practice handling new windows and tabs.
+  </div>
+</section>
+
+<!-- MULTIPLE WINDOWS PRACTICE -->
+<section id="multiWindowPractice">
+  <h2>Multiple Windows Practice</h2>
+
+  <p>
+    This section is designed to practice handling multiple browser windows.
+    Clicking the button below will open three separate browser windows,
+    each with a different title and description. This helps in learning how
+    to switch between parent and child windows using automation tools like Selenium.
+  </p>
+
+  <button
+    id="openMultipleWindowsBtn"
+    name="openMultipleWindowsButton"
+    onclick="openMultipleWindows()">
+    Open 3 Practice Windows
+  </button>
+</section>
+
+
+
+<!-- ENABLED / DISABLED -->
+<section id="enabled">
+  <h2>Enabled and Disabled Fields</h2>
+
+  <label for="disabledInput">Disabled Input:</label><br>
+  <input
+    id="disabledInput"
+    name="disabledInput"
+    value="Disabled Field"
+    disabled>
+
+  <br><br>
+
+  <label for="enabledInput">Enabled Input:</label><br>
+  <input
+    id="enabledInput"
+    name="enabledInput"
+    value="Enabled Field">
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    One field is disabled and cannot be edited, the other is enabled.
+  </div>
+</section>
+
+
+<!-- DROPDOWNS -->
+<section id="dropdowns">
+  <h2>Dropdowns and Selection Controls</h2>
+
+  <!-- Single Select -->
+  <label for="singleSelect">Single Select Dropdown:</label><br>
+  <select
+    id="singleSelect"
+    name="singleSelectDropdown">
+    <option value="">-- Select --</option>
+    <option>A</option>
+    <option>B</option>
+  </select>
+
+  <br><br>
+
+  <!-- Multi Select -->
+  <label for="multiSelect">Multi Select Dropdown:</label><br>
+  <select
+    id="multiSelect"
+    name="multiSelectDropdown"
+    multiple>
+    <option>Multi 1</option>
+    <option>Multi 2</option>
+    <option>Multi 3</option>
+  </select>
+
+  <br><br>
+
+  <!-- Combo box -->
+  <label for="techCombo">Technology Combobox:</label><br>
+  <input
+    id="techCombo"
+    list="tech"
+    name="technologyCombobox">
+
+  <datalist id="tech">
+    <option value="Java">
+    <option value="Python">
+    <option value="Selenium">
+  </datalist>
+
+  <br><br>
+
+  <!-- Technology Checkboxes -->
+  <label>Select Technologies:</label><br>
+
+  <input type="checkbox" id="techJava" name="techJava">
+  <label for="techJava">Java</label>
+
+  <br>
+
+  <input type="checkbox" id="techPython" name="techPython">
+  <label for="techPython">Python</label>
+
+  <br>
+
+  <input type="checkbox" id="techJS" name="techJS">
+  <label for="techJS">JavaScript</label>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    Practice single-select, multi-select, combobox, and checkbox handling.
+  </div>
+</section>
+
+
+<!-- DATE -->
+<section id="dates">
+  <h2>Date Selection</h2>
+
+  <label for="startDate">Start Date:</label><br>
+  <input
+    type="date"
+    id="startDate"
+    name="startDate">
+
+  <br><br>
+
+  <label for="endDate">End Date:</label><br>
+  <input
+    type="date"
+    id="endDate"
+    name="endDate"
+    onchange="validateDate()">
+
+  <br><br>
+
+  <label>Validation Message:</label>
+  <div
+    id="dateMsg"
+    class="error">
+  </div>
+
+  <br>
+
+  <label>Description:</label>
+  <div>
+    End date cannot be earlier than the start date.
+  </div>
+</section>
+
+<!-- DATE VALIDATION -->
+<section id="dateValidation">
+  <h2>📅 Start Date Validation (No Past Dates)</h2>
+
+  <label for="validatedStartDate">
+    Start Date <span class="required">*</span>
+  </label><br>
+
+  <input
+    type="date"
+    id="validatedStartDate"
+    name="validatedStartDate"
+  >
+
+  <div id="dateValidationMsg" class="error"></div>
+</section>
+
+<!-- CALENDAR CLICK DATE PICKER -->
+<section id="calendarClickDate">
+  <h2>📆 Calendar Click Date Picker</h2>
+
+  <label for="calendarDate">
+    Select Date <span class="required">*</span>
+  </label><br>
+
+  <div class="calendar-wrapper">
+    <input
+      type="text"
+      id="calendarDate"
+      name="calendarDate"
+      placeholder="Select date"
+      readonly
+    >
+    <span class="calendar-icon" onclick="openCalendar()">📅</span>
+  </div>
+
+  <div id="calendarPopup" class="calendar-popup"></div>
+</section>
+
+<!-- DROPDOWN CALENDAR -->
+<section id="dropdownCalendar">
+  <h2>📆 Dropdown Calendar (Date / Month / Year)</h2>
+
+  <label>Year</label>
+  <select id="yearSelect" onchange="renderCalendar()"></select>
+
+  <label>Month</label>
+  <select id="monthSelect" onchange="renderCalendar()"></select>
+
+  <br><br>
+
+  <div id="calendarDays" class="calendar-days"></div>
+
+  <p>
+    Selected Date:
+    <strong><span id="selectedDate"></span></strong>
+  </p>
+</section>
+
+
+
+
+<!-- LINKS -->
+<section id="links">
+  <h2>Link Navigation</h2>
+
+  <label>Valid External Links:</label><br><br>
+
+  <a
+    id="googleLink"
+    name="googleLink"
+    href="https://google.com"
+    target="_blank">
+    Google
+  </a>
+  <br><br>
+
+  <a
+    id="openaiLink"
+    name="openaiLink"
+    href="https://openai.com"
+    target="_blank">
+    OpenAI
+  </a>
+
+  <br><br>
+
+  <label>Broken Link Example:</label><br><br>
+
+  <a
+    id="brokenLink"
+    name="brokenLink"
+    href="brokenlink">
+    Broken Link
+  </a>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    Use these links to practice navigation and broken-link validation.
+  </div>
+</section>
+
+
+<!-- ALERTS -->
+<section id="alerts">
+  <h2>JavaScript Alerts</h2>
+
+  <label>Simple Alert:</label><br>
+  <button
+    id="simpleAlertBtn"
+    name="simpleAlertButton"
+    onclick="alert('Alert')">
+    Open Alert
+  </button>
+
+  <br><br>
+
+  <label>Confirmation Alert:</label><br>
+  <button
+    id="confirmAlertBtn"
+    name="confirmAlertButton"
+    onclick="confirm('Confirm Alert')">
+    Open Confirm
+  </button>
+
+  <br><br>
+
+  <label>Prompt Alert:</label><br>
+  <button
+    id="promptAlertBtn"
+    name="promptAlertButton"
+    onclick="prompt('Prompt Alert')">
+    Open Prompt
+  </button>
+</section>
+
+
+<!-- WAIT -->
+<section id="waits">
+  <h2>Explicit Wait Example</h2>
+
+  <label for="waitBtn">Click to start wait process:</label><br><br>
+
+  <button
+    id="waitBtn"
+    name="waitExampleButton"
+    onclick="waitExample()">
+    Click & Wait
+  </button>
+
+  <br><br>
+
+  <label>Status:</label>
+  <div id="waitMsg"></div>
+</section>
+
+
+<!-- IFRAME -->
+<section id="iframe">
+  <h2>iFrame Handling</h2>
+
+  <label>Example iFrame:</label><br><br>
+
+  <iframe
+    id="simpleIframe"
+    name="simpleIframe"
+    srcdoc="
+      <button
+        id='iframeBtn'
+        onclick=&quot;this.innerText='Clicked inside iframe'&quot;>
+        Iframe Button
+      </button>
+    ">
+  </iframe>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>This iframe contains a clickable button.</div>
+</section>
+
+<!-- TRIPLE NESTED IFRAMES (CLEAR RECTANGLES) -->
+<section id="tripleNestedIframes">
+  <h2>Triple Nested Iframes – Clear View</h2>
+
+  <!-- LEVEL 1 -->
+  <iframe
+    id="frame1"
+    name="frame1"
+    style="width:800px; height:400px; border:4px solid black;"
+    srcdoc="
+      <html>
+      <body style='margin:0; background:#d9d9d9; display:flex; align-items:center; justify-content:center;'>
+
+        <div style='
+          width:90%;
+          height:80%;
+          background:#bfbfbf;
+          border:4px solid black;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:20px;
+          font-weight:bold;'>
+          LEVEL 1 (Outer Iframe)
+
+          <!-- LEVEL 2 -->
+          <iframe
+            id='frame2'
+            name='frame2'
+            style='width:80%; height:60%; border:4px solid blue; margin-left:20px;'
+            srcdoc=&quot;
+              <html>
+              <body style='margin:0; background:#cce5ff; display:flex; align-items:center; justify-content:center;'>
+
+                <div style='
+                  width:90%;
+                  height:80%;
+                  background:#99ccff;
+                  border:4px solid blue;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:18px;
+                  font-weight:bold;'>
+
+                  LEVEL 2 (Middle Iframe)
+
+                  <!-- LEVEL 3 -->
+                  <iframe
+                    id='frame3'
+                    name='frame3'
+                    style='width:70%; height:50%; border:4px solid green; margin-left:20px;'
+                    srcdoc=&quot;
+                      <html>
+                      <body style='margin:0; background:#d6f5d6; display:flex; align-items:center; justify-content:center;'>
+                        <div style='
+                          width:85%;
+                          height:70%;
+                          background:#a6e3a6;
+                          border:4px solid green;
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          font-size:16px;
+                          font-weight:bold;'>
+                          LEVEL 3 (Inner Iframe)
+                        </div>
+                      </body>
+                      </html>
+                    &quot;>
+                  </iframe>
+
+                </div>
+              </body>
+              </html>
+            &quot;>
+          </iframe>
+
+        </div>
+      </body>
+      </html>
+    ">
+  </iframe>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    Each iframe fills most of its parent and is color-coded:
+    Gray → Blue → Green for clear nesting visibility.
+  </div>
+</section>
+
+
+
+
+<!-- DRAG & DROP -->
+<section id="dragdrop">
+  <h2>Drag and Drop</h2>
+
+  <label>Draggable Item:</label><br>
+  <div
+    id="dragCountry"
+    class="drag"
+    name="dragCountry"
+    draggable="true"
+    ondragstart="event.dataTransfer.setData('text','India')">
+    India
+  </div>
+
+  <br>
+
+  <label>Drop Target:</label><br>
+  <div
+    id="dropCapital"
+    class="drop"
+    name="dropCapital"
+    ondragover="event.preventDefault()"
+    ondrop="this.innerHTML=event.dataTransfer.getData('text')">
+    Drop Here
+  </div>
+
+  <br>
+
+  <label>Description:</label>
+  <div>Drag the country and drop it into the target box.</div>
+</section>
+
+
+<!-- SLIDER -->
+<section id="slider">
+  <h2>Slider Control</h2>
+
+  <label for="sliderRange">Select Value:</label><br>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    id="sliderRange"
+    name="valueSlider"
+    oninput="syncSlider(this.value)">
+  
+  <br><br>
+
+  <label for="sliderText">Selected Value:</label><br>
+  <input
+    type="text"
+    id="sliderText"
+    name="sliderValueInput"
+    oninput="syncText(this.value)">
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>Move the slider or enter a value to keep both fields in sync.</div>
+</section>
+
+<!-- PRICE RANGE SLIDER -->
+<section id="priceRange">
+  <h2>Price Range Slider</h2>
+
+  <label for="minPrice">
+    Minimum Price: ₹<span id="minPriceValue">1000</span>
+  </label><br>
+  <input
+    type="range"
+    id="minPrice"
+    name="minPriceSlider"
+    min="0"
+    max="10000"
+    step="500"
+    value="1000"
+    oninput="updatePriceRange()"
+  >
+  <br><br>
+
+  <label for="maxPrice">
+    Maximum Price: ₹<span id="maxPriceValue">8000</span>
+  </label><br>
+  <input
+    type="range"
+    id="maxPrice"
+    name="maxPriceSlider"
+    min="0"
+    max="10000"
+    step="500"
+    value="8000"
+    oninput="updatePriceRange()"
+  >
+
+  <div id="priceMsg"></div>
+</section>
+
+
+<!-- DUAL RANGE SLIDER -->
+<section id="dualRange">
+  <h2>Dual Handle Price Range Slider</h2>
+
+  <div class="range-container">
+    <input
+      type="range"
+      id="dualMin"
+      min="0"
+      max="10000"
+      step="500"
+      value="2000"
+      oninput="updateDualRange()"
+    >
+
+    <input
+      type="range"
+      id="dualMax"
+      min="0"
+      max="10000"
+      step="500"
+      value="8000"
+      oninput="updateDualRange()"
+    >
+  </div>
+
+  <p>
+    Selected Range:
+    ₹<span id="dualMinVal">2000</span>
+    –
+    ₹<span id="dualMaxVal">8000</span>
+  </p>
+
+  <div id="dualRangeMsg"></div>
+</section>
+
+
+
+<!-- HIDDEN -->
+<section id="hidden">
+  <h2>Hidden Element Handling</h2>
+
+  <label>Action:</label><br>
+  <button
+    id="showHiddenBtn"
+    name="showHiddenButton"
+    onclick="hiddenDiv.style.display='block'">
+    Show Hidden Text
+  </button>
+
+  <br><br>
+
+  <label>Result:</label>
+  <div
+    id="hiddenDiv"
+    name="hiddenText"
+    class="hidden">
+    Hidden Text
+  </div>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>Click the button to display the hidden text.</div>
+</section>
+
+
+<!-- TABLE -->
+<section id="table">
+  <h2>User Data Table</h2>
+
+  <label>Users List:</label><br><br>
+
+  <table
+    class="table"
+    id="dataTable"
+    name="userDataTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <br>
+
+  <label>Description:</label>
+  <div>This table displays users with different roles.</div>
+</section>
+
+
+<!-- SCROLL -->
+<section
+  id="scroll"
+  name="scrollPracticeSection"
+  style="height:300px">
+
+  <h2>Scroll Practice</h2>
+
+  <label>Instruction:</label>
+  <div>Scroll down to reach the bottom of this section.</div>
+
+  <div style="margin-top:220px; font-weight:bold;">
+    Scroll Down Practice Target
+  </div>
+
+</section>
+
+
+<!-- HOVER -->
+<section id="hover">
+  <h2>Hover Practice</h2>
+
+  <label>Hover Area:</label><br>
+  <div
+    class="hover-box"
+    name="hoverArea"
+    onmouseover="hoverMsg.style.display='block'">
+    Hover Here
+  </div>
+
+  <br>
+
+  <label>Result:</label>
+  <div
+    id="hoverMsg"
+    name="hoverMessage"
+    style="display:none;color:green">
+    Hovered Successfully
+  </div>
+</section>
+
+
+<!-- UPLOAD -->
+<section id="upload">
+  <h2>File Upload</h2>
+
+  <label for="fileUpload">Select a file to upload:</label><br><br>
+
+  <input
+    type="file"
+    id="fileUpload"
+    name="fileUploadInput">
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>Choose a file from your system to practice upload automation.</div>
+</section>
+
+
+<!-- CHECKBOX -->
+<section id="checkbox">
+  <h2>Checkbox Selection</h2>
+
+  <label>Choose Options:</label><br><br>
+
+  <input
+    type="checkbox"
+    id="optionOne"
+    name="optionOneCheckbox"
+    onchange="checkEnable()">
+  <label for="optionOne">Option 1</label>
+
+  <br>
+
+  <input
+    type="checkbox"
+    id="optionTwo"
+    name="optionTwoCheckbox"
+    onchange="checkEnable()">
+  <label for="optionTwo">Option 2</label>
+
+  <br><br>
+
+  <button
+    id="checkBtn"
+    name="checkboxSubmitButton"
+    disabled>
+    Submit
+  </button>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>Select any option to enable the Submit button.</div>
+</section>
+
+
+<!-- IMAGE -->
+<section id="image">
+  <h2>Image Validation</h2>
+
+  <label>Sample Image:</label><br><br>
+
+  <img
+    id="sampleImage"
+    name="sampleImage"
+    src="https://yt3.googleusercontent.com/lFeBV5uK0wmCDLl61JRXrPTxDEMHF2ICrLQm16y63ny7QGDIpGmVdGkLBXytaeDGcr8tes70qKU=s900-c-k-c0x00ffffff-no-rj"
+    alt="Sample placeholder image"
+    width="150"
+    height="150">
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>This image is used to practice visibility and attribute validation.</div>
+</section>
+
+
+
+<!-- DOUBLE CLICK -->
+<section id="doubleclick">
+  <h2>Double Click Action</h2>
+
+  <label>Action Button:</label><br><br>
+
+  <button
+    id="doubleClickBtn"
+    name="doubleClickButton"
+    ondblclick="this.innerText='Double Clicked'">
+    Double Click Me
+  </button>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>Double-click the button to change its text.</div>
+</section>
+
+<section id="contextClick">
+  <h2>Context Click (Right Click) Practice</h2>
+
+  <button id="contextBtn" name="contextClickButton">
+    Right Click Me
+  </button>
+
+  <ul id="contextMenu" class="context-menu">
+    <li name="contextEdit">Edit</li>
+    <li name="contextDelete">Delete</li>
+    <li name="contextView">View</li>
+  </ul>
+
+  <div id="contextResult"></div>
+</section>
+
+<!-- TOOLTIP -->
+<section id="tooltip">
+  <h2>Tooltip Practice</h2>
+
+  <button
+    id="tooltipBtn"
+    name="tooltipButton"
+    onmouseenter="showTooltip()"
+    onmouseleave="hideTooltip()"
+  >
+    Hover Me
+  </button>
+
+  <div id="tooltipText" class="tooltip-box">
+    This is a tooltip message
+  </div>
+</section>
+
+
+
+<!-- DELAY -->
+<section id="delay">
+  <h2>Delayed Enable Button</h2>
+
+  <label>Start Delay Action:</label><br><br>
+  <button
+    id="startDelayBtn"
+    name="delayStartButton"
+    onclick="startDelay()">
+    Start Delay
+  </button>
+
+  <br><br>
+
+  <label>Button Enabled After Delay:</label><br>
+  <button
+    id="enableLater"
+    name="delayedEnableButton"
+    disabled>
+    Enabled Later
+  </button>
+
+  <br><br>
+
+  <label>Status Message:</label>
+  <div
+    id="delayMsg"
+    name="delayMessage">
+  </div>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    Click “Start Delay” to enable the second button after a few seconds.
+  </div>
+</section>
+
+<!-- XPATH AXES PRACTICE -->
+<section id="xpathAxes" style="padding:20px; font-family:Arial;">
+  <h2>XPath Axes Practice (Correct Sibling Structure)</h2>
+
+  <!-- GRAND PARENT -->
+  <div class="grand-parent"
+       style="border:3px solid #1e90ff; padding:15px;">
+
+    <strong>Grand Parent</strong>
+
+    <!-- PARENT (TARGET PARENT) -->
+    <div class="parent"
+         style="border:3px solid #32cd32; padding:15px; margin-top:15px;">
+      <strong>Parent (Target)</strong>
+
+      <!-- CHILD (TARGET ELEMENT) -->
+      <span class="child"
+            id="targetElement"
+            style="display:inline-block;
+                   border:3px solid #ff4500;
+                   padding:10px;
+                   margin-top:10px;">
+        Child (Target Element)
+      </span>
+    </div>
+
+    <!-- PARENT SIBLINGS (Same Parent: grand-parent) -->
+    <div class="parent-sibling"
+         style="border:3px dashed #8a2be2; padding:15px; margin-top:10px;">
+      Parent Sibling One
+    </div>
+
+    <div class="parent-sibling"
+         style="border:3px dashed #8a2be2; padding:15px; margin-top:10px;">
+      Parent Sibling Two
+    </div>
+
+    <div class="parent-sibling"
+         style="border:3px dashed #8a2be2; padding:15px; margin-top:10px;">
+      Parent Sibling Three
+    </div>
+
+  </div>
+</section>
+
+
+
+</section>
+
+
+
+<!-- NORMALIZE SPACE -->
+<section id="normalizeSpace">
+  <h2>Normalize Space XPath</h2>
+
+  <button id="spaceBtn">
+      Login   
+  </button>
+</section>
+
+
+<!-- NOT FUNCTION -->
+<section id="notFunction">
+  <h2>XPath not() Function</h2>
+
+  <input disabled value="Disabled Field">
+  <input value="Enabled Field">
+</section>
+
+
+<!-- LAST FUNCTION -->
+<section id="lastFunction">
+  <h2>XPath last()</h2>
+
+  <table border="1">
+    <tr><td>Row 1</td></tr>
+    <tr><td>Row 2</td></tr>
+    <tr><td>Row 3</td></tr>
+  </table>
+</section>
+
+
+<!-- DYNAMIC ATTRIBUTES -->
+<section id="dynamicAttributes">
+  <h2>Dynamic Attribute XPath</h2>
+
+  <div id="msg_12345">Message One</div>
+  <div id="msg_67890">Message Two</div>
+</section>
+
+<!-- SVG XPATH -->
+<section id="svgXpath">
+  <h2>SVG XPath Practice</h2>
+
+  <svg width="100" height="100">
+    <circle cx="50" cy="50" r="40" fill="blue"/>
+  </svg>
+</section>
+
+
+
+<!-- PAGINATION -->
+<section id="pagination">
+  <h2>Pagination Control</h2>
+
+  <label>Navigate Pages:</label><br><br>
+
+  <div
+    class="pagination"
+    id="pages"
+    name="paginationControl">
+  </div>
+
+  <br><br>
+
+  <label>Description:</label>
+  <div>
+    Click on page numbers to navigate through table data.
+  </div>
+</section>
+
+<!-- RESIZABLE ELEMENT -->
+<section id="resizable">
+  <h2>Resizable Element</h2>
+
+  <div
+    style="
+      width:200px;
+      height:120px;
+      border:2px solid #2563eb;
+      resize: both;
+      overflow: auto;
+      padding:10px;
+    ">
+    Resize me from the bottom-right corner
+  </div>
+
+  <br>
+
+  <div>
+    Drag the corner to resize this box.
+  </div>
+</section>
+
+
+<section>
+  <h2>Class Name Locator Practice</h2>
+
+  <button class="submit signInBtn">
+    Sign In
+  </button>
+  
+  <button class="login">
+    Log In
+  </button>
+
+</section>
+
+<section id="messageDisplay">
+  <h2>Message Displayed</h2>
+
+  <label>Action:</label><br>
+  <button type="button" name="showMessageBtn">
+    Show Message
+  </button>
+
+  <br><br>
+
+  <label>Result:</label><br>
+  <div name="displayMessage" type="text" style="display:none">
+    Message is displayed successfully
+  </div>
+</section>
+
+<section id="dynamicTextSection">
+  <h2>Dynamic Text Example (Partial Change)</h2>
+
+  <label>Dynamic Message:</label><br><br>
+
+  <div name="dynamicMessage" type="text">
+    Status: <span id="dynamicValue">Initializing</span>
+  </div>
+</section>
+
+<section id="tutorialDynamicText">
+  <h2>Dynamic Tutorial Text</h2>
+
+  <label>Current Tutorial:</label><br><br>
+
+  <div name="tutorialMessage" type="text">
+    <span class="commonText">Tutorial-</span>
+    <span id="tutorialValue">1 Selenium Basics</span>
+  </div>
+</section>
+
+<section id="dynamicErrorMessages">
+  <h2>Dynamic Error Messages</h2>
+
+  <label>Error Message:</label><br><br>
+
+  <div name="errorMessage" type="text">
+    Error_123
+  </div>
+</section>
+
+<!-- MENU PRACTICE SECTION -->
+<section id="menuSection">
+  <h2>Menu Navigation</h2>
+
+  <ul id="menu" class="nav-menu">
+    <li class="menu-item">Home</li>
+    <li class="menu-item">About</li>
+    <li class="menu-item">Contact</li>
+  </ul>
+</section>
+
+<!-- STARTS-WITH SELECTOR PRACTICE SECTION -->
+<section id="inputFields">
+  <h2>Input Fields</h2>
+
+  <label>Username:</label><br>
+  <input type="text" name="regUsername"><br><br>
+
+  <label>Email:</label><br>
+  <input type="text" name="regEmail"><br><br>
+</section>
+
+
+
+
+</div>
+</div>
+</div>
+
+<script>
+/* LOGIN → NEW TAB */
+function openLoginTab() {
+  window.open(
+    location.pathname + "?page=login",
+    "_blank"
+  );
+}
+
+/* REGISTER → NEW WINDOW */
+function openRegisterWindow() {
+  window.open(
+    location.pathname + "?page=register",
+    "registerWindow",
+    "width=600,height=600,resizable=yes,scrollbars=yes"
+  );
+}
+
+/* ALREADY HAVE ACCOUNT → NEW WINDOW (LOGIN) */
+function openLoginWindow() {
+  window.open(
+    location.pathname + "?page=login",
+    "loginWindow",
+    "width=500,height=500,resizable=yes,scrollbars=yes"
+  );
+}
+
+/* PAGE LOADER – FINAL FIX */
+const params = new URLSearchParams(window.location.search);
+const page = params.get("page");
+
+const mainContent = document.getElementById("mainContent");
+const authNav = document.getElementById("authNav");
+const loginSection = document.getElementById("loginSection");
+const registerSection = document.getElementById("registerSection");
+
+if (page === "login") {
+  mainContent.style.display = "none";
+  authNav.style.display = "none";
+  loginSection.style.display = "block";
+}
+
+if (page === "register") {
+  mainContent.style.display = "none";
+  authNav.style.display = "none";
+  registerSection.style.display = "block";
+}
+
+/* Normal mode */
+if (!page) {
+  mainContent.style.display = "block";
+  authNav.style.display = "block";
+}
+
+
+// ===== Logic =====
+function validateAge() {
+  const age = parseInt(regAge.value);
+  ageError.innerText =
+    isNaN(age) || age < 18 ? "Age must be 18 or above" : "";
+}
+
+function login() {
+
+  const username = document.getElementById("loginUsername").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  const loginMsg = document.getElementById("loginMsg");
+
+  // Allowed users
+  const validUsers = {
+    "admin": "admin123",
+    "user1": "user123"
+  };
+
+  // Empty check
+  if (!username || !password) {
+    loginMsg.innerHTML =
+      "<span class='error'>Username and Password are required</span>";
+    return;
+  }
+
+  // Credential validation
+  if (validUsers[username] && validUsers[username] === password) {
+    loginMsg.innerHTML =
+      "<span class='success'>Login Successful</span>";
+  } else {
+    loginMsg.innerHTML =
+      "<span class='error'>Invalid username or password</span>";
+  }
+}
+
+// Modal
+function openForgotModal() {
+  forgotModal.style.display = "block";
+}
+function closeForgotModal() {
+  forgotModal.style.display = "none";
+}
+function generateRegistrationId() {
+  return "REG-" + Math.floor(100000 + Math.random() * 900000);
+}
+function register() {
+
+  const name = document.getElementById("regName").value.trim();
+  const lastName = document.getElementById("regLastName").value.trim();
+  const phone = document.getElementById("regPhone").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const age = parseInt(document.getElementById("regAge").value);
+  const terms = document.getElementById("regTerms").checked;
+  const gender = document.querySelector('input[name="regGender"]:checked');
+  const msg = document.getElementById("registerMsg");
+
+  msg.innerHTML = "";
+
+  if (!name || !lastName || !phone || !email) {
+    msg.innerHTML = "<span class='error'>All fields are mandatory</span>";
+    return;
+  }
+
+  if (!/^[A-Za-z]+$/.test(name) || !/^[A-Za-z]+$/.test(lastName)) {
+    msg.innerHTML =
+      "<span class='error'>Name and Last Name must contain only letters</span>";
+    return;
+  }
+
+  if (!/^[0-9]{10}$/.test(phone)) {
+    msg.innerHTML =
+      "<span class='error'>Phone number must be exactly 10 digits</span>";
+    return;
+  }
+
+  if (!/^[^ ]+@[^ ]+\.com$/.test(email)) {
+    msg.innerHTML =
+      "<span class='error'>Enter a valid email address</span>";
+    return;
+  }
+
+  if (!gender) {
+    msg.innerHTML =
+      "<span class='error'>Please select gender</span>";
+    return;
+  }
+
+  if (isNaN(age) || age < 18) {
+    msg.innerHTML =
+      "<span class='error'>Age must be 18 or above</span>";
+    return;
+  }
+
+  if (!terms) {
+    msg.innerHTML =
+      "<span class='error'>Please accept the terms</span>";
+    return;
+  }
+
+  const regId = generateRegistrationId();
+  msg.innerHTML =
+    "<span class='success'>Registration Successful! Your Registration ID is: <b>" +
+    regId +
+    "</b></span>";
+}
+
+function calculate(){interestResult.innerText="Interest = "+(principal.value*years.value*rate.value/100)}
+function openModal(){fpModal.style.display="block"}
+function closeModal(){fpModal.style.display="none"}
+function validateDate(){if(endDate.value<startDate.value){dateMsg.innerText="End date corrected";endDate.value=startDate.value}else dateMsg.innerText=""}
+function waitExample(){let t=3;waitMsg.innerText="Processing...";let i=setInterval(()=>{waitMsg.innerText="Please wait... "+t--;if(t<0){clearInterval(i);waitMsg.innerText="Status id displayed Successfully"}},1000)}
+function syncSlider(v){sliderText.value=v}
+function syncText(v){sliderRange.value=v}
+function checkEnable(){checkBtn.disabled=false}
+let roles = ["QA", "Developer", "Manager", "Admin", "Support"];
+let data = [];
+
+for (let i = 1; i <= 15; i++) {
+  data.push({
+    id: i,
+    name: "User" + i,
+    role: roles[(i - 1) % roles.length]
+  });
+}
+
+let perPage=5
+function loadPage(p){
+let tb=document.querySelector("#dataTable tbody");tb.innerHTML=""
+data.slice((p-1)*perPage,p*perPage).forEach(d=>tb.innerHTML+=`<tr><td>${d.id}</td><td>${d.name}</td><td>${d.role}</td></tr>`)
+document.querySelectorAll(".pagination span").forEach(s=>s.classList.remove("active"))
+document.getElementById("p"+p).classList.add("active")
+}
+data.forEach((_,i)=>{if(i%perPage===0)pages.innerHTML+=`<span id="p${i/perPage+1}" onclick="loadPage(${i/perPage+1})">${i/perPage+1}</span>`})
+loadPage(1)
+function startDelay(){
+let t=5;delayMsg.innerText="Action started..."
+let i=setInterval(()=>{delayMsg.innerText="Enabling in "+t--+" sec";if(t<0){clearInterval(i);enableLater.disabled=false;delayMsg.innerText="Button Enabled"}},1000)
+}
+
+function openMultipleWindows() {
+
+  for (let i = 1; i <= 3; i++) {       // 🔹 for-loop starts
+
+      const childWindow = window.open("", "_blank", "width=400,height=300");
+
+      childWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Child Window ${i}</title>
+          </head>
+          <body>
+            <h2>Child Window ${i}</h2>
+          </body>
+        </html>
+      `);
+
+      childWindow.document.close();
+
+    }
+}
+const contextBtn = document.getElementById("contextBtn");
+const contextMenu = document.getElementById("contextMenu");
+const contextResult = document.getElementById("contextResult");
+
+// Right click handler
+contextBtn.addEventListener("contextmenu", function (e) {
+  e.preventDefault();
+  contextMenu.style.display = "block";
+  contextMenu.style.left = e.pageX + "px";
+  contextMenu.style.top = e.pageY + "px";
+});
+
+// Hide menu on normal click
+document.addEventListener("click", function () {
+  contextMenu.style.display = "none";
+});
+
+// Handle menu option click
+contextMenu.addEventListener("click", function (e) {
+  if (e.target.tagName === "LI") {
+    const selectedOption = e.target.innerText;
+
+    contextResult.innerHTML =
+      "<span class='success'>" + selectedOption + " option selected</span>";
+
+    contextMenu.style.display = "none";
+  }
+});
+
+function updatePriceRange() {
+  const min = document.getElementById("minPrice").value;
+  const max = document.getElementById("maxPrice").value;
+
+  document.getElementById("minPriceValue").innerText = min;
+  document.getElementById("maxPriceValue").innerText = max;
+
+  const msg = document.getElementById("priceMsg");
+
+  if (parseInt(min) > parseInt(max)) {
+    msg.innerHTML =
+      "<span class='error'>Minimum price cannot be greater than maximum price</span>";
+  } else {
+    msg.innerHTML =
+      "<span class='success'>Selected price range: ₹" + min + " - ₹" + max + "</span>";
+  }
+}
+
+function updateDualRange() {
+  const minInput = document.getElementById("dualMin");
+  const maxInput = document.getElementById("dualMax");
+
+  let min = parseInt(minInput.value);
+  let max = parseInt(maxInput.value);
+
+  if (min > max) {
+    min = max;
+    minInput.value = min;
+  }
+
+  const range = maxInput.max;
+  const minPercent = (min / range) * 100;
+  const maxPercent = (max / range) * 100;
+
+  const trackStyle = `
+    linear-gradient(
+      to right,
+      #d3d3d3 ${minPercent}%,
+      #007bff ${minPercent}%,
+      #007bff ${maxPercent}%,
+      #d3d3d3 ${maxPercent}%
+    )
+  `;
+
+  minInput.style.background = trackStyle;
+  maxInput.style.background = trackStyle;
+
+  document.getElementById("dualMinVal").innerText = min;
+  document.getElementById("dualMaxVal").innerText = max;
+
+  document.getElementById("dualRangeMsg").innerHTML =
+    "<span class='success'>Price range selected: ₹" + min + " - ₹" + max + "</span>";
+}
+
+window.onload = updateDualRange;
+
+function showTooltip() {
+  document.getElementById("tooltipText").style.display = "block";
+}
+
+function hideTooltip() {
+  document.getElementById("tooltipText").style.display = "none";
+}
+
+function validateStartDate() {
+  const input = document.getElementById("validatedStartDate");
+  const msg = document.getElementById("dateValidationMsg");
+
+  if (!input.value) return;
+
+  const selectedDate = new Date(input.value);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate < today) {
+    msg.innerText = "Start date cannot be a past date";
+    input.value = "";
+  } else {
+    msg.innerText = "";
+  }
+}
+
+function setMinToday() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  const localToday = `${year}-${month}-${day}`;
+  document.getElementById("validatedStartDate").setAttribute("min", localToday);
+}
+
+window.addEventListener("load", setMinToday);
+
+function openCalendar() {
+  const popup = document.getElementById("calendarPopup");
+  popup.innerHTML = "";
+  popup.style.display = "block";
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let i = -5; i <= 10; i++) {
+    const date = new Date();
+    date.setDate(today.getDate() + i);
+
+    const btn = document.createElement("button");
+    btn.innerText = date.getDate();
+
+    if (date < today) {
+      btn.className = "disabled";
+      btn.disabled = true;
+    } else {
+      btn.onclick = () => selectDate(date);
+    }
+
+    popup.appendChild(btn);
+  }
+}
+
+function selectDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+
+  document.getElementById("calendarDate").value = `${y}-${m}-${d}`;
+  document.getElementById("calendarPopup").style.display = "none";
+}
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+function initDropdownCalendar() {
+  const yearSelect = document.getElementById("yearSelect");
+  const monthSelect = document.getElementById("monthSelect");
+
+  const currentYear = today.getFullYear();
+
+  // Year range: current year ± 10
+  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+    yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
+  }
+
+  const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  months.forEach((m, i) => {
+    monthSelect.innerHTML += `<option value="${i}">${m}</option>`;
+  });
+
+  yearSelect.value = currentYear;
+  monthSelect.value = today.getMonth();
+
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const year = parseInt(document.getElementById("yearSelect").value);
+  const month = parseInt(document.getElementById("monthSelect").value);
+  const container = document.getElementById("calendarDays");
+
+  container.innerHTML = "";
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    date.setHours(0, 0, 0, 0);
+
+    const btn = document.createElement("button");
+    btn.innerText = d;
+
+    if (date < today) {
+      btn.className = "disabled";
+      btn.disabled = true;
+    } else {
+      btn.onclick = () => selectDropdownDate(year, month, d);
+    }
+
+    container.appendChild(btn);
+  }
+}
+
+function selectDropdownDate(y, m, d) {
+  const formatted =
+    `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+  document.getElementById("selectedDate").innerText = formatted;
+}
+
+window.addEventListener("load", initDropdownCalendar);
+
+document
+    .getElementsByName("showMessageBtn")[0]
+    .addEventListener("click", function () {
+      document.getElementsByName("displayMessage")[0].style.display = "block";
+    });
+	
+	
+const statusValues = [
+    "Processing",
+    "In Progress",
+    "Almost Done",
+    "Completed"
+  ];
+
+  let index1 = 0;
+
+  setInterval(function () {
+    index1 = (index1 + 1) % statusValues.length;
+    document.getElementById("dynamicValue").innerText = statusValues[index1];
+  }, 30000); // changes every 2 minutes
+  
+
+  const tutorials = [
+    "1 The Selenium Basics",
+    "2 The Selenium XPath and Locators",
+    "3 The Selenium Waits and Synchronization",
+    "4 The Selenium Framework Design"
+  ];
+
+  let index2 = 0;
+
+  setInterval(function () {
+    index2 = (index2 + 1) % tutorials.length;
+    document.getElementById("tutorialValue").innerText = tutorials[index2];
+  }, 30000); // updates every 2 minutes
+
+  const errorCodes = [
+    "Error_123",
+    "Error_456",
+    "Error_789"
+  ];
+
+  let index3 = 0;
+
+  setInterval(function () {
+    index3 = (index3 + 1) % errorCodes.length;
+    document.getElementsByName("errorMessage")[0].innerText = errorCodes[index3];
+  }, 30000); // changes every 2 minutes
+
+
+</script>
+
+</body>
+</html>
